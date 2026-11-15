@@ -308,7 +308,7 @@ void PixelRenderer::draw_startup_menu(double time) {
         if (enable_upcoming_missions) {
             mission(186,"MISSION 3","USB / COORDINATES / SCAN S-01",2,true);
             mission(225,"MISSION 4","MARS RESEARCH DATA QUIZ",3,true);
-            mission(264,"MISSION 6","GATHER S-01 REPAIR MATERIALS",4,true);
+            mission(264,"MISSION 5","GATHER S-01 REPAIR MATERIALS",4,true);
         }
         button(306,"BACK",enable_upcoming_missions ? 5 : 1);
     } else draw_sound_settings(true);
