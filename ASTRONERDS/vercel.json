@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "bash scripts/build-web.sh",
+  "outputDirectory": "dist",
+  "installCommand": "true"
+}

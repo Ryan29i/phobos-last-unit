@@ -20,15 +20,33 @@ endif()
 add_executable(horizon src/main.cpp)
 target_link_libraries(horizon PRIVATE horizon_core)
 if(HORIZON_SDL)
-    find_package(PkgConfig QUIET)
-    if(PkgConfig_FOUND)
-        pkg_check_modules(SDL2 QUIET IMPORTED_TARGET sdl2)
+    if(EMSCRIPTEN)
+        target_sources(horizon PRIVATE src/SDLRenderer.cpp)
+        target_compile_definitions(horizon PRIVATE HORIZON_HAS_SDL=1 HORIZON_WEB_BUILD=1)
+        target_compile_options(horizon PRIVATE -sUSE_SDL=2)
+        target_link_options(horizon PRIVATE
+            -sUSE_SDL=2
+            -sASYNCIFY
+            -sALLOW_MEMORY_GROWTH=1
+            --shell-file "${CMAKE_SOURCE_DIR}/web/shell.html"
+            --preload-file "${CMAKE_SOURCE_DIR}/assets@/assets"
+        )
+        set_target_properties(horizon PROPERTIES
+            OUTPUT_NAME index
+            SUFFIX ".html"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist"
+        )
+    else()
+        find_package(PkgConfig QUIET)
+        if(PkgConfig_FOUND)
+            pkg_check_modules(SDL2 QUIET IMPORTED_TARGET sdl2)
+        endif()
     endif()
     if(TARGET PkgConfig::SDL2)
         target_sources(horizon PRIVATE src/SDLRenderer.cpp)
         target_compile_definitions(horizon PRIVATE HORIZON_HAS_SDL=1)
         target_link_libraries(horizon PRIVATE PkgConfig::SDL2)
-    else()
+    elseif(NOT EMSCRIPTEN)
         message(STATUS "SDL2 unavailable: terminal, demo, and PPM renderer remain available")
     endif()
 endif()

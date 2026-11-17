@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d17">
+  <meta name="description" content="Explore Phobos and bring Unit-01's rescue mission to its conclusion.">
+  <title>PHOBOS: The Last Unit</title>
+  <style>
+    :root { color-scheme: dark; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: #080d17; color: #e6f0ff; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: radial-gradient(ellipse at 50% 0%, #17253a 0, #080d17 58%); }
+    main { width: min(100%, 1280px); }
+    header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 12px; }
+    h1 { margin: 0; font-size: clamp(16px, 3vw, 24px); letter-spacing: .14em; }
+    .tag { color: #82d7d2; font-size: 12px; letter-spacing: .1em; }
+    #frame { position: relative; overflow: hidden; border: 1px solid #38516d; background: #02050a; box-shadow: 0 20px 70px #0009; }
+    canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; image-rendering: pixelated; outline: none; }
+    #status { position: absolute; inset: 0; display: grid; place-content: center; gap: 14px; color: #a9c2dc; background: #050a12; text-align: center; font-size: 13px; }
+    #status:empty { display: none; }
+    #status progress { width: min(280px, 70vw); accent-color: #82d7d2; }
+    footer { margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; color: #91a4bb; font-size: 12px; line-height: 1.6; }
+    footer strong { color: #d2e1f5; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 12px; } header { align-items: flex-start; flex-direction: column; gap: 5px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>PHOBOS: THE LAST UNIT</h1>
+      <span class="tag">PROJECT HORIZON · UNIT-01</span>
+    </header>
+    <div id="frame">
+      <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="0" aria-label="PHOBOS game canvas"></canvas>
+      <div id="status"><span>Preparing the mission…</span><progress value="0" max="100"></progress></div>
+    </div>
+    <footer>
+      <span><strong>Move</strong> WASD / arrows · <strong>Interact</strong> E · <strong>Mine</strong> J / left click · <strong>Inventory</strong> Tab</span>
+      <span>Click the game to focus · Esc opens the menu</span>
+    </footer>
+  </main>
+  <script>
+    var statusElement = document.getElementById('status');
+    var progressElement = statusElement.querySelector('progress');
+    var Module = {
+      canvas: document.getElementById('canvas'),
+      print: function () { console.log.apply(console, arguments); },
+      printErr: function () { console.error.apply(console, arguments); },
+      setStatus: function (message) {
+        if (!message) { statusElement.replaceChildren(); return; }
+        statusElement.querySelector('span').textContent = message;
+      },
+      monitorRunDependencies: function (left) {
+        var total = Module.expectedDataFileDownloads || 1;
+        progressElement.value = Math.max(0, (total - left) * 100 / total);
+      },
+      onRuntimeInitialized: function () { statusElement.replaceChildren(); }
+    };
+  </script>
+  {{{ SCRIPT }}}
+</body>
+</html>

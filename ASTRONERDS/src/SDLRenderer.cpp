@@ -8,6 +8,12 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#define HORIZON_FRAME_DELAY(ms) emscripten_sleep(ms)
+#else
+#define HORIZON_FRAME_DELAY(ms) SDL_Delay(ms)
+#endif
 
 namespace horizon {
 namespace {
@@ -75,9 +81,14 @@ int run_sdl(int frame_limit, bool side_view) {
     SDLContext context;
     AudioOutput audio;
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"0"); // Nearest-neighbor pixels.
+#ifdef __EMSCRIPTEN__
+    constexpr Uint32 window_flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+#else
+    constexpr Uint32 window_flags = SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_FULLSCREEN_DESKTOP;
+#endif
     std::unique_ptr<SDL_Window,decltype(&SDL_DestroyWindow)> window(
         SDL_CreateWindow("PHOBOS: The Last Unit",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
-                         1280,720,SDL_WINDOW_RESIZABLE|SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_FULLSCREEN_DESKTOP),SDL_DestroyWindow);
+                         1280,720,window_flags),SDL_DestroyWindow);
     check(bool(window));
     
     // icon added
@@ -274,7 +285,7 @@ int run_sdl(int frame_limit, bool side_view) {
             check(SDL_RenderClear(renderer.get()) == 0);
             check(SDL_RenderCopy(renderer.get(),texture.get(),nullptr,nullptr) == 0);
             SDL_RenderPresent(renderer.get());
-            previous = now; ++frames; SDL_Delay(1); continue;
+            previous = now; ++frames; HORIZON_FRAME_DELAY(1); continue;
         }
         const double dt = std::chrono::duration<double>(now-previous).count();
         previous = now;
@@ -316,7 +327,7 @@ int run_sdl(int frame_limit, bool side_view) {
         check(SDL_RenderCopy(renderer.get(),texture.get(),nullptr,nullptr) == 0);
         SDL_RenderPresent(renderer.get());
         ++frames;
-        SDL_Delay(1);
+        HORIZON_FRAME_DELAY(1);
     }
     return 0;
 }

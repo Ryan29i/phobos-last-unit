@@ -2,6 +2,12 @@
 
 Project Horizon is a C++17, software-rendered exploration game starring Unit-01, a small utility robot aboard a damaged rescue ship near Phobos. The SDL game opens on an animated space menu. The current campaign follows Unit-01 across the surface and ship interior, from emergency recovery to restoring the rescue ship.
 
+## Run in a browser
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FRyan29i%2Fphobos-last-unit&root-directory=ASTRONERDS)
+
+This deploys the browser build from the [GitHub repository](https://github.com/Ryan29i/phobos-last-unit) into your own Vercel project. The first build downloads Emscripten. See [Vercel deployment details](DEPLOY_VERCEL.md).
+
 ## Current campaign
 
 - **Mission 1 — Act 1:** Recover three first-aid kits and two food-and-water boxes from the surface, deliver them to the injured astronaut, then inspect silicate, water ice and rock-fragment samples.

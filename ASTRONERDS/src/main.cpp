@@ -99,7 +99,11 @@ int terminal() {
 }
 int main(int argc, char** argv) {
     try {
+#ifdef HORIZON_WEB_BUILD
+        const std::string mode = argc > 1 ? argv[1] : "--window";
+#else
         const std::string mode = argc > 1 ? argv[1] : "--terminal";
+#endif
         if (mode == "--help" || mode == "-h") { help(); return 0; }
         if (mode == "--demo") return horizon::run_isometric_demo(std::cout) ? 0 : 1;
         if (mode == "--side-demo") return horizon::run_mission_demo(std::cout) ? 0 : 1;
