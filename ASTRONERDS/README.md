@@ -1,5 +1,7 @@
 # Unit-01: Project Horizon
 
+___(you can play by opening this link "https://phobos-last-unit.vercel.app/")____
+
 Project Horizon is a C++17, software-rendered exploration game starring Unit-01, a small utility robot aboard a damaged rescue ship near Phobos. The SDL game opens on an animated space menu. The current campaign follows Unit-01 across the surface and ship interior, from emergency recovery to restoring the rescue ship.
 
 ## Run in a browser
@@ -118,3 +120,4 @@ Core source is under `src/` and public interfaces are under `include/horizon/`:
 The earlier isometric expedition and side-scrolling prototype remain available for demos and regression coverage; the default graphical game starts with the ship-and-surface campaign described above.
 
 The S-01 escort, repair, boarding and final charging sequence is described in [the rescue missions](docs/MISSIONS_6_7.md).
+
